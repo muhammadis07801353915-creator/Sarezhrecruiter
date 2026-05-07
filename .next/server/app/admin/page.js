@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/admin/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__09p8x9b._.js")
+R.c("server/chunks/ssr/0gp0_next_dist_esm_build_templates_app-page_10cyfeh.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0h9.prk._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0gnqzru._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__062t2ye._.js")
+R.c("server/chunks/ssr/0gp0_next_dist_client_components_0hs2l5b._.js")
+R.c("server/chunks/ssr/0gp0_next_dist_client_components_builtin_forbidden_0h5zuq7.js")
+R.c("server/chunks/ssr/0gp0_next_dist_client_components_builtin_unauthorized_12kgx8c.js")
+R.c("server/chunks/ssr/0gp0_next_dist_client_components_builtin_global-error_0jbd9zd.js")
+R.c("server/chunks/ssr/03ci_Documents_sarezh-recruiter__next-internal_server_app_admin_page_actions_0o03ps3.js")
+R.m(31421)
+module.exports=R.m(31421).exports

@@ -1,0 +1,3 @@
+module.exports=[78461,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(87612);a.n(d("[project]/OneDrive/Documents/sarezh-recruiter/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},90508,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(87612);a.n(d("[project]/OneDrive/Documents/sarezh-recruiter/node_modules/next/dist/client/components/builtin/global-error.js"))},66607,a=>{"use strict";a.i(78461);var b=a.i(90508);a.n(b)},41812,a=>{a.n(a.i(66607))}];
+
+//# sourceMappingURL=0gp0_next_dist_client_components_builtin_global-error_0jbd9zd.js.map
