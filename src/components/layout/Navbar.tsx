@@ -27,11 +27,7 @@ export function Navbar() {
             </div>
             <span className="tracking-tight">{t('app_title')}</span>
           </Link>
-          <div className="flex flex-wrap items-center gap-2 md:gap-6 mt-2 md:mt-0">
-            <Link href="/admin" className="text-xs md:text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-              {t('admin_panel')}
-            </Link>
-          </div>
+
         </div>
 
         <div className="flex items-center gap-4">
