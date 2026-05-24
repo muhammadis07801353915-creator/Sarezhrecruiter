@@ -60,9 +60,16 @@ export const useDataStore = create<DataState>()(
     addCVSubmission: async (cv) => {
       // Optimistic UI update
       set((state) => ({ cvSubmissions: [...state.cvSubmissions, cv] }));
+      if (!hasSupabaseConfig) {
+        alert("System Warning: Supabase is not configured! Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your Vercel Environment Variables.");
+        return;
+      }
       if (hasSupabaseConfig && supabase) {
         const { error } = await supabase.from('cv_submissions').insert([cv]);
-        if (error) console.error("Error inserting cv_submission:", error);
+        if (error) {
+          console.error("Error inserting cv_submission:", error);
+          alert("Database Error: " + error.message);
+        }
       }
     },
     updateCVQuestions: async (questions) => {
