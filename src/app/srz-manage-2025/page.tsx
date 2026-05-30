@@ -9,7 +9,7 @@ import { FormQuestion } from '../../types';
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
-  const { jobRequests, cvSubmissions, fetchData, deleteCVSubmission } = useDataStore();
+  const { jobRequests, cvSubmissions, fetchData, deleteCVSubmission, deleteJobRequest } = useDataStore();
   const [tab, setTab] = useState<'cv' | 'job' | 'settings'>('cv');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
@@ -20,6 +20,13 @@ export default function AdminDashboard() {
   const handleDeleteCV = async (id: string) => {
     if (confirm('Are you sure you want to delete this CV? / دڵنیایت کە دەتەوێت ئەم سیڤییە بسڕیتەوە؟')) {
       await deleteCVSubmission(id);
+      setOpenMenuId(null);
+    }
+  };
+
+  const handleDeleteJob = async (id: string) => {
+    if (confirm('Are you sure you want to delete this Job? / دڵنیایت کە دەتەوێت ئەم کارە بسڕیتەوە؟')) {
+      await deleteJobRequest(id);
       setOpenMenuId(null);
     }
   };
@@ -116,8 +123,8 @@ export default function AdminDashboard() {
             {sortedJobs.length === 0 && <p className="text-gray-500">{t('no_job_admin')}</p>}
             {sortedJobs.map((job, idx) => (
               <motion.div key={job.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
-                  <div>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
+                  <div className="flex-1">
                     <h3 className="font-bold tracking-tight text-gray-900 text-xl">{job.title}</h3>
                     <div className="text-sm text-gray-500 flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
                       {job.employer_name && <span className="font-medium text-amber-600">{t('company')}: {job.employer_name}</span>}
@@ -126,9 +133,27 @@ export default function AdminDashboard() {
                       <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {new Date(job.created_at).toLocaleString()}</span>
                     </div>
                   </div>
-                   <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${job.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
-                    {job.status}
-                  </span>
+                  <div className="flex items-center gap-3 relative">
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${job.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                      {job.status}
+                    </span>
+                    <button 
+                      onClick={() => setOpenMenuId(openMenuId === job.id ? null : job.id)}
+                      className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <MoreVertical className="w-5 h-5" />
+                    </button>
+                    {openMenuId === job.id && (
+                      <div className="absolute top-full right-0 mt-1 w-36 bg-white border border-gray-100 shadow-lg rounded-xl overflow-hidden z-10">
+                        <button 
+                          onClick={() => handleDeleteJob(job.id)}
+                          className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2"
+                        >
+                          <Trash2 className="w-4 h-4" /> Delete / سڕینەوە
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

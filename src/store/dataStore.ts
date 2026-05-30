@@ -13,6 +13,7 @@ interface DataState {
   updateCVQuestions: (questions: FormQuestion[]) => Promise<void>;
   updateJobQuestions: (questions: FormQuestion[]) => Promise<void>;
   deleteCVSubmission: (id: string) => Promise<void>;
+  deleteJobRequest: (id: string) => Promise<void>;
   fetchData: () => Promise<void>;
 }
 
@@ -98,6 +99,18 @@ export const useDataStore = create<DataState>()(
         if (error) {
           console.error("Error deleting cv_submission:", error);
           alert("Error deleting CV: " + error.message);
+        }
+      }
+    },
+    deleteJobRequest: async (id) => {
+      set((state) => ({
+        jobRequests: state.jobRequests.filter((job) => job.id !== id),
+      }));
+      if (hasSupabaseConfig && supabase) {
+        const { error } = await supabase.from('job_requests').delete().eq('id', id);
+        if (error) {
+          console.error("Error deleting job_request:", error);
+          alert("Error deleting Job: " + error.message);
         }
       }
     },

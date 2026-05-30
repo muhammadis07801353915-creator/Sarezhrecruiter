@@ -50,5 +50,8 @@ CREATE POLICY "Allow public select to job_requests" ON job_requests FOR SELECT U
 
 CREATE POLICY "Allow public insert to cv_submissions" ON cv_submissions FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public select to cv_submissions" ON cv_submissions FOR SELECT USING (true);
+CREATE POLICY "Allow public delete to cv_submissions" ON cv_submissions FOR DELETE USING (true);
 
 CREATE POLICY "Allow public all to admin_settings" ON admin_settings FOR ALL USING (true) WITH CHECK (true);
+
+CREATE POLICY "Allow public delete to job_requests" ON job_requests FOR DELETE USING (true);
