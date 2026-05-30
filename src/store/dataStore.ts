@@ -12,6 +12,7 @@ interface DataState {
   addCVSubmission: (cv: CVSubmission) => Promise<void>;
   updateCVQuestions: (questions: FormQuestion[]) => Promise<void>;
   updateJobQuestions: (questions: FormQuestion[]) => Promise<void>;
+  deleteCVSubmission: (id: string) => Promise<void>;
   fetchData: () => Promise<void>;
 }
 
@@ -68,7 +69,8 @@ export const useDataStore = create<DataState>()(
         const { error } = await supabase.from('cv_submissions').insert([cv]);
         if (error) {
           console.error("Error inserting cv_submission:", error);
-          alert("Database Error: " + error.message);
+          const currentUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || "NOT_SET";
+          alert(`Database Error: ${error.message}\n\nDebug URL: ${currentUrl}`);
         }
       }
     },
@@ -84,6 +86,19 @@ export const useDataStore = create<DataState>()(
       if (hasSupabaseConfig && supabase) {
         const { error } = await supabase.from('admin_settings').upsert({ id: 'job_questions', data: questions });
         if (error) console.error("Error updating job_questions:", error);
+      }
+    },
+    deleteCVSubmission: async (id) => {
+      // Optimistic UI update
+      set((state) => ({
+        cvSubmissions: state.cvSubmissions.filter((cv) => cv.id !== id),
+      }));
+      if (hasSupabaseConfig && supabase) {
+        const { error } = await supabase.from('cv_submissions').delete().eq('id', id);
+        if (error) {
+          console.error("Error deleting cv_submission:", error);
+          alert("Error deleting CV: " + error.message);
+        }
       }
     },
   })

@@ -2,19 +2,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDataStore } from '../../store/dataStore';
-import { FileText, Building2, Clock } from 'lucide-react';
+import { FileText, Building2, Clock, MoreVertical, Trash2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { FormQuestion } from '../../types';
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
-  const { jobRequests, cvSubmissions, fetchData } = useDataStore();
+  const { jobRequests, cvSubmissions, fetchData, deleteCVSubmission } = useDataStore();
   const [tab, setTab] = useState<'cv' | 'job' | 'settings'>('cv');
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const handleDeleteCV = async (id: string) => {
+    if (confirm('Are you sure you want to delete this CV? / دڵنیایت کە دەتەوێت ئەم سیڤییە بسڕیتەوە؟')) {
+      await deleteCVSubmission(id);
+      setOpenMenuId(null);
+    }
+  };
+
+  const sortedCVs = [...cvSubmissions].sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime());
+  const sortedJobs = [...jobRequests].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">
@@ -48,11 +59,11 @@ export default function AdminDashboard() {
       <div className="grid gap-6">
         {tab === 'cv' && (
           <div className="space-y-6">
-            {cvSubmissions.length === 0 && <p className="text-gray-500">{t('no_cv_admin')}</p>}
-            {cvSubmissions.map((cv, idx) => (
+            {sortedCVs.length === 0 && <p className="text-gray-500">{t('no_cv_admin')}</p>}
+            {sortedCVs.map((cv, idx) => (
               <motion.div key={cv.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
-                  <div>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
+                  <div className="flex-1">
                     <h3 className="font-bold tracking-tight text-gray-900 text-lg">
                       {cv.candidate_name ? `${t('cv')}: ${cv.candidate_name}` : `Submission ID: ${cv.id}`}
                     </h3>
@@ -63,9 +74,27 @@ export default function AdminDashboard() {
                       <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {new Date(cv.submitted_at).toLocaleString()}</span>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${cv.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
-                    {cv.status}
-                  </span>
+                  <div className="flex items-center gap-3 relative">
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${cv.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                      {cv.status}
+                    </span>
+                    <button 
+                      onClick={() => setOpenMenuId(openMenuId === cv.id ? null : cv.id)}
+                      className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <MoreVertical className="w-5 h-5" />
+                    </button>
+                    {openMenuId === cv.id && (
+                      <div className="absolute top-full right-0 mt-1 w-36 bg-white border border-gray-100 shadow-lg rounded-xl overflow-hidden z-10">
+                        <button 
+                          onClick={() => handleDeleteCV(cv.id)}
+                          className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2"
+                        >
+                          <Trash2 className="w-4 h-4" /> Delete / سڕینەوە
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {cv.responses.map((r, i) => (
@@ -84,8 +113,8 @@ export default function AdminDashboard() {
 
         {tab === 'job' && (
           <div className="space-y-6">
-            {jobRequests.length === 0 && <p className="text-gray-500">{t('no_job_admin')}</p>}
-            {jobRequests.map((job, idx) => (
+            {sortedJobs.length === 0 && <p className="text-gray-500">{t('no_job_admin')}</p>}
+            {sortedJobs.map((job, idx) => (
               <motion.div key={job.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-4 mb-4 gap-4">
                   <div>
