@@ -104,14 +104,30 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {cv.responses.map((r, i) => (
-                    <div key={i} className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                      <p className="text-xs font-semibold text-emerald-600 mb-1 uppercase tracking-wider">{r.question}</p>
-                      <p className="text-gray-900 font-medium">
-                        {Array.isArray(r.answer) ? r.answer.join(', ') : r.answer?.toString() || '—'}
-                      </p>
-                    </div>
-                  ))}
+                  {cv.responses.map((r, i) => {
+                    const isImageResponse = r.question === t('cv_images') || r.question === 'CV Images' || r.question === 'وێنەکانی سیڤی';
+                    return (
+                      <div key={i} className={`bg-gray-50 p-4 rounded-xl border border-gray-100 ${isImageResponse ? 'md:col-span-2' : ''}`}>
+                        <p className="text-xs font-semibold text-emerald-600 mb-2 uppercase tracking-wider">{r.question}</p>
+                        {isImageResponse && Array.isArray(r.answer) ? (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            {r.answer.map((imgStr, imgIdx) => (
+                              <div key={imgIdx} className="relative rounded-xl overflow-hidden border border-gray-200 shadow-sm aspect-[3/4]">
+                                <img src={imgStr} alt={`CV Image ${imgIdx + 1}`} className="w-full h-full object-cover" />
+                                <a href={imgStr} download={`cv-image-${cv.id}-${imgIdx + 1}.jpg`} className="absolute bottom-2 right-2 bg-white/90 text-emerald-700 hover:text-emerald-800 text-xs font-bold px-2 py-1 rounded-md shadow-sm transition-colors">
+                                  Download
+                                </a>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-gray-900 font-medium whitespace-pre-wrap break-words">
+                            {Array.isArray(r.answer) ? r.answer.join(', ') : r.answer?.toString() || '—'}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </motion.div>
             ))}
