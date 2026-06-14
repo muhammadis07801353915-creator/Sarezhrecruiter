@@ -118,7 +118,14 @@ const resources = {
       "multiselect": "Multiple Choice",
       "options_comma": "Options (separated by comma `,` e.g. Yes,No)",
       "saved_successfully": "Saved successfully!",
-      "restore_defaults": "Restore Default Questions"
+      "restore_defaults": "Restore Default Questions",
+      "upload_cv_title": "Upload Your CV",
+      "upload_cv_desc": "Take a photo of your CV or upload an image from your gallery. You can upload multiple pages.",
+      "upload_cv_btn": "Choose Photos",
+      "upload_cv_change": "Add More Photos",
+      "upload_cv_uploaded": "{{count}} photo(s) uploaded",
+      "upload_cv_skip": "Skip this step",
+      "cv_images": "CV Images"
     }
   },
   ckb: {
@@ -237,7 +244,14 @@ const resources = {
       "multiselect": "لیست (هەڵبژاردنی چەند دانەیەک)",
       "options_comma": "هەڵبژاردەکان بە فاریزە (,) جیا بکەرەوە (نموونە: هەولێر,سلێمانی,دهۆک)",
       "saved_successfully": "بە سەرکەوتوویی پاشەکەوت کرا!",
-      "restore_defaults": "گێڕانەوەی پرسیارە بنەڕەتییەکان"
+      "restore_defaults": "گێڕانەوەی پرسیارە بنەڕەتییەکان",
+      "upload_cv_title": "سیڤیەکەت ئەپلۆید بکە",
+      "upload_cv_desc": "وێنەی سیڤیەکەت بگرە یان لە گەلەرییەکەت ئەپلۆیدی بکە. دەتوانیت چەند لاپەڕەیەک ئەپلۆید بکەیت.",
+      "upload_cv_btn": "هەڵبژاردنی وێنەکان",
+      "upload_cv_change": "زیادکردنی وێنەی تر",
+      "upload_cv_uploaded": "{{count}} وێنە ئەپلۆید کرا",
+      "upload_cv_skip": "بازدان لەم هەنگاوە",
+      "cv_images": "وێنەکانی سیڤی"
     }
   }
 };
